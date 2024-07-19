@@ -1,5 +1,5 @@
 let scene, camera, renderer, cubes, analyser, dataArray;
-let cubeCount = 500; // Adjusted for performance
+const cubeCount = 500; // Adjusted for performance
 
 function init() {
     scene = new THREE.Scene();
@@ -10,7 +10,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('particle-container').appendChild(renderer.domElement);
 
-    let cubeGeometry = new THREE.BoxGeometry();
+    const cubeGeometry = new THREE.BoxGeometry();
     const colors = [
         0xff5733, 0xffbd33, 0x33ff57, 0x3357ff, 0xbd33ff,
         0xff33bd, 0x33ffbd, 0xbdff33, 0x5733ff, 0x33bdff
@@ -19,13 +19,13 @@ function init() {
     cubes = new THREE.Group();
 
     for (let i = 0; i < cubeCount; i++) {
-        let material = new THREE.MeshBasicMaterial({
+        const material = new THREE.MeshBasicMaterial({
             color: colors[Math.floor(Math.random() * colors.length)],
             opacity: 0.8,
             transparent: true,
         });
 
-        let cube = new THREE.Mesh(cubeGeometry, material);
+        const cube = new THREE.Mesh(cubeGeometry, material);
         cube.position.set((Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5);
         cube.scale.set(Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1);
 
@@ -33,24 +33,25 @@ function init() {
     }
 
     scene.add(cubes);
-
     animate();
 
     const playButton = document.getElementById('play-button');
-    playButton.addEventListener('click', () => {
-        const musicPlayer = document.getElementById('music-player');
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const source = audioContext.createMediaElementSource(musicPlayer);
-        analyser = audioContext.createAnalyser();
-        source.connect(analyser);
-        analyser.connect(audioContext.destination);
-        analyser.fftSize = 256;
-        const bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
+    playButton.addEventListener('click', handlePlayButtonClick);
+}
 
-        musicPlayer.play().catch((e) => {
-            console.error('Audio play error:', e);
-        });
+function handlePlayButtonClick() {
+    const musicPlayer = document.getElementById('music-player');
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaElementSource(musicPlayer);
+    analyser = audioContext.createAnalyser();
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
+    musicPlayer.play().catch((e) => {
+        console.error('Audio play error:', e);
     });
 }
 
