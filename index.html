@@ -22,8 +22,11 @@
     <script type="module">
         import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
         import { OrbitControls } from './OrbitControls.js';
-        import { init } from './init.js';
-        init(THREE, OrbitControls);
+        import './script.js';
+        
+        window.onload = () => {
+            init(THREE, OrbitControls);
+        };
     </script>
 </body>
 </html>
