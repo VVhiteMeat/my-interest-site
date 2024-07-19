@@ -1,5 +1,3 @@
-// script.js
-
 let scene, camera, renderer, cubes, analyser, dataArray;
 let cubeCount = 500; // Adjusted for performance
 
@@ -13,8 +11,6 @@ function init() {
     document.getElementById('particle-container').appendChild(renderer.domElement);
 
     let cubeGeometry = new THREE.BoxGeometry();
-    let edgeGeometry = new THREE.EdgesGeometry(cubeGeometry);
-
     const colors = [
         0xff5733, 0xffbd33, 0x33ff57, 0x3357ff, 0xbd33ff,
         0xff33bd, 0x33ffbd, 0xbdff33, 0x5733ff, 0x33bdff
