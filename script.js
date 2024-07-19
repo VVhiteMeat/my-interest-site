@@ -61,10 +61,9 @@ export function init(THREE, OrbitControls) {
                 dummy.updateMatrix();
                 instancedMesh.setMatrixAt(i, dummy.matrix);
 
+                // Simple color adjustment
                 const colorValue = dataArray[i % dataArray.length];
                 const color = new THREE.Color(`hsl(${(colorValue / 256) * 360}, 100%, 50%)`);
-                instancedMesh.getColorAt(i, dummy);
-                dummy.color.copy(color);
                 instancedMesh.setColorAt(i, color);
             }
             instancedMesh.instanceMatrix.needsUpdate = true;
