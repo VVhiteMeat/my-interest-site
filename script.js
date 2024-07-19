@@ -62,16 +62,19 @@ export function init(THREE, OrbitControls) {
         requestAnimationFrame(animate);
         if (analyser) {
             analyser.getByteFrequencyData(dataArray);
-            console.log(dataArray); // Log the frequency data to see if it's being received
+
             cubes.children.forEach((cube, i) => {
                 const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
                 cube.scale.set(scale, scale, scale);
                 
                 const colorValue = dataArray[i % dataArray.length];
-                const colorHex = (colorValue << 16) | (colorValue << 8) | colorValue;
-                cube.material.color.setHex(colorHex);
+                const r = Math.min(255, Math.max(0, colorValue + 100));
+                const g = Math.min(255, Math.max(0, 255 - colorValue));
+                const b = Math.min(255, Math.max(0, 128 - colorValue));
+                cube.material.color.setRGB(r / 255, g / 255, b / 255);
             });
         }
+
         cubes.rotation.y += 0.005;
         cubes.rotation.x += 0.003;
         renderer.render(scene, camera);
