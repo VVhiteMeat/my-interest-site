@@ -1,5 +1,5 @@
 export function init(THREE, OrbitControls) {
-    let scene, camera, renderer, cubes, analyser, dataArray;
+    let scene, camera, renderer, analyser, dataArray;
     const cubeCount = 500; // Adjusted for performance
 
     function setup() {
@@ -11,29 +11,20 @@ export function init(THREE, OrbitControls) {
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('particle-container').appendChild(renderer.domElement);
 
-        const cubeGeometry = new THREE.BoxGeometry();
-        const colors = [
-            0xff5733, 0xffbd33, 0x33ff57, 0x3357ff, 0xbd33ff,
-            0xff33bd, 0x33ffbd, 0xbdff33, 0x5733ff, 0x33bdff
-        ];
+        const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+        const material = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.8 });
 
-        cubes = new THREE.Group();
+        const instancedMesh = new THREE.InstancedMesh(cubeGeometry, material, cubeCount);
+        const dummy = new THREE.Object3D();
 
         for (let i = 0; i < cubeCount; i++) {
-            const material = new THREE.MeshBasicMaterial({
-                color: colors[Math.floor(Math.random() * colors.length)],
-                opacity: 0.8,
-                transparent: true,
-            });
-
-            const cube = new THREE.Mesh(cubeGeometry, material);
-            cube.position.set((Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5);
-            cube.scale.set(Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1);
-
-            cubes.add(cube);
+            dummy.position.set((Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5, (Math.random() * 2 - 1) * 5);
+            dummy.scale.set(Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1, Math.random() * 0.5 + 0.1);
+            dummy.updateMatrix();
+            instancedMesh.setMatrixAt(i, dummy.matrix);
         }
 
-        scene.add(cubes);
+        scene.add(instancedMesh);
         animate();
 
         const playButton = document.getElementById('play-button');
@@ -63,21 +54,23 @@ export function init(THREE, OrbitControls) {
         if (analyser) {
             analyser.getByteFrequencyData(dataArray);
 
-            cubes.children.forEach((cube, i) => {
+            const dummy = new THREE.Object3D();
+            for (let i = 0; i < cubeCount; i++) {
                 const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
-                cube.scale.set(scale, scale, scale);
-                
+                dummy.scale.set(scale, scale, scale);
                 const colorValue = dataArray[i % dataArray.length];
                 const r = Math.min(255, Math.max(0, colorValue + 100));
                 const g = Math.min(255, Math.max(0, 255 - colorValue));
                 const b = Math.min(255, Math.max(0, 128 - colorValue));
-                cube.material.color.setRGB(r / 255, g / 255, b / 255);
-            });
+                dummy.material = new THREE.MeshBasicMaterial({ color: new THREE.Color(r / 255, g / 255, b / 255) });
+                dummy.updateMatrix();
+                instancedMesh.setMatrixAt(i, dummy.matrix);
+            }
+            instancedMesh.instanceMatrix.needsUpdate = true;
         }
 
-        cubes.rotation.y += 0.005;
-        cubes.rotation.x += 0.003;
-        cubes.rotation.z += 0.002;  // Additional rotation for more dynamic effect
+        instancedMesh.rotation.y += 0.005;
+        instancedMesh.rotation.x += 0.003;
         renderer.render(scene, camera);
     }
 
