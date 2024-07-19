@@ -1,6 +1,6 @@
 export function init(THREE, OrbitControls) {
     let scene, camera, renderer, instancedMesh, analyser, dataArray;
-    const cubeCount = 300; // Adjusted for performance
+    const cubeCount = 200; // Further reduced for performance
 
     function setup() {
         scene = new THREE.Scene();
