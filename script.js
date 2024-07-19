@@ -61,6 +61,9 @@ export function init(THREE, OrbitControls) {
         if (analyser) {
             analyser.getByteFrequencyData(dataArray);
             cubes.children.forEach((cube, i) => {
+                const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
+                cube.scale.set(scale, scale, scale);
+                
                 const colorValue = dataArray[i % dataArray.length];
                 const colorHex = (colorValue << 16) | (colorValue << 8) | colorValue;
                 cube.material.color.setHex(colorHex);
