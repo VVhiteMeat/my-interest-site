@@ -77,6 +77,7 @@ export function init(THREE, OrbitControls) {
 
         cubes.rotation.y += 0.005;
         cubes.rotation.x += 0.003;
+        cubes.rotation.z += 0.002;  // Additional rotation for more dynamic effect
         renderer.render(scene, camera);
     }
 
