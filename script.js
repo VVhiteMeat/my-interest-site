@@ -54,6 +54,8 @@ function animate() {
         analyser.getByteFrequencyData(dataArray);
 
         const dummy = new THREE.Object3D();
+        const color = new THREE.Color();
+
         for (let i = 0; i < cubeCount; i++) {
             const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
             dummy.scale.set(scale, scale, scale);
@@ -62,7 +64,7 @@ function animate() {
 
             // Update color
             const colorValue = dataArray[i % dataArray.length];
-            const color = new THREE.Color(`hsl(${(colorValue / 256) * 360}, 100%, 50%)`);
+            color.setHSL(colorValue / 256, 1, 0.5);
             instancedMesh.setColorAt(i, color);
         }
         instancedMesh.instanceMatrix.needsUpdate = true;
