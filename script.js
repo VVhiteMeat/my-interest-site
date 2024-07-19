@@ -60,7 +60,9 @@ function animate() {
     if (analyser) {
         analyser.getByteFrequencyData(dataArray);
         cubes.children.forEach((cube, i) => {
-            cube.material.color.setHex(0xff5733 + dataArray[i]);
+            const colorIndex = i % dataArray.length;
+            const colorValue = dataArray[colorIndex];
+            cube.material.color.setHex((0xff0000 + (colorValue << 8) + colorValue));
         });
     }
     cubes.rotation.y += 0.005;
