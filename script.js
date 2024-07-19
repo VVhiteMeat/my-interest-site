@@ -1,9 +1,8 @@
-// script.js
-
 let scene, camera, renderer, instancedMesh, analyser, dataArray;
 const cubeCount = 200; // Adjusted for performance
 
 function init() {
+    console.log("Initializing scene...");
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 10;
@@ -12,6 +11,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById('particle-container').appendChild(renderer.domElement);
 
+    console.log("Creating instanced mesh...");
     const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
     const material = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.8 });
 
@@ -26,13 +26,16 @@ function init() {
     }
 
     scene.add(instancedMesh);
+    console.log("Instanced mesh added to scene.");
     animate();
 
     const playButton = document.getElementById('play-button');
     playButton.addEventListener('click', handlePlayButtonClick);
+    console.log("Event listener for play button added.");
 }
 
 function handlePlayButtonClick() {
+    console.log("Play button clicked.");
     const musicPlayer = document.getElementById('music-player');
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const source = audioContext.createMediaElementSource(musicPlayer);
@@ -79,6 +82,7 @@ function animate() {
 }
 
 window.addEventListener('resize', () => {
+    console.log("Window resized.");
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
