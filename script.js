@@ -94,24 +94,11 @@ function init() {
         });
     }, { once: true });
 
-    // Load the audio file as a Blob URL
-    loadAudioFile('Come a little closer.wav', audio);
-
     // Prevent text selection
     document.getElementById('content').style.userSelect = 'none';
 
     // Mouse move event
     window.addEventListener('mousemove', onMouseMove, false);
-}
-
-function loadAudioFile(filePath, audioElement) {
-    fetch(filePath)
-        .then(response => response.blob())
-        .then(blob => {
-            const url = URL.createObjectURL(blob);
-            audioElement.src = url;
-        })
-        .catch(error => console.error('Error loading audio file:', error));
 }
 
 function animate() {
