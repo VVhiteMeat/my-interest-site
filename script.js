@@ -51,7 +51,9 @@ export function init(THREE, OrbitControls) {
         const bufferLength = analyser.frequencyBinCount;
         dataArray = new Uint8Array(bufferLength);
 
-        musicPlayer.play().catch((e) => {
+        musicPlayer.play().then(() => {
+            console.log('Audio playing');
+        }).catch((e) => {
             console.error('Audio play error:', e);
         });
     }
@@ -60,6 +62,7 @@ export function init(THREE, OrbitControls) {
         requestAnimationFrame(animate);
         if (analyser) {
             analyser.getByteFrequencyData(dataArray);
+            console.log(dataArray); // Log the frequency data to see if it's being received
             cubes.children.forEach((cube, i) => {
                 const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
                 cube.scale.set(scale, scale, scale);
