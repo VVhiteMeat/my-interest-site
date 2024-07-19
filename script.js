@@ -62,7 +62,8 @@ function animate() {
         cubes.children.forEach((cube, i) => {
             const colorIndex = i % dataArray.length;
             const colorValue = dataArray[colorIndex];
-            cube.material.color.setHex((0xff0000 + (colorValue << 8) + colorValue));
+            const colorHex = (colorValue << 16) | (colorValue << 8) | colorValue;
+            cube.material.color.setHex(colorHex);
         });
     }
     cubes.rotation.y += 0.005;
