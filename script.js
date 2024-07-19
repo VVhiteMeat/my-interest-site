@@ -1,7 +1,7 @@
 import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
 
 let scene, camera, renderer, instancedMesh, analyser, dataArray;
-const cubeCount = 200; // Adjusted for performance
+const cubeCount = 100; // Reduced for better performance
 
 function init() {
     console.log("Initializing scene...");
