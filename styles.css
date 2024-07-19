@@ -1,0 +1,100 @@
+/* styles.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background-size: 400% 400%;
+    animation: gradientBackground 15s ease infinite;
+    color: #ffffff;
+    user-select: none; /* Prevent text selection */
+}
+
+@keyframes gradientBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#content {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+#content h1 {
+    font-size: 3rem; /* Increased size */
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add text shadow */
+    animation: textFadeIn 3s ease-in-out;
+}
+
+#content p {
+    font-size: 1.5rem; /* Increased size */
+    margin-bottom: 20px;
+    animation: fadeIn 2s ease-in-out 1s;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add text shadow */
+    animation: textFadeIn 4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes textFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+audio {
+    display: none; /* Hide the audio player controls */
+}
+
+#music-player {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+#play-button {
+    padding: 15px 25px; /* Increased size */
+    font-size: 1.2rem; /* Increased size */
+    color: #ffffff;
+    background-color: #ff5733;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: fadeIn 2s ease-in-out 2s;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add text shadow */
+}
+
+#play-button:hover {
+    background-color: #ff3333;
+    transform: scale(1.1);
+}
