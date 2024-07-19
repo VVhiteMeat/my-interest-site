@@ -1,3 +1,5 @@
+// script.js
+
 let scene, camera, renderer, instancedMesh, analyser, dataArray;
 const cubeCount = 200; // Adjusted for performance
 
@@ -82,4 +84,4 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-init();
+export { init };
