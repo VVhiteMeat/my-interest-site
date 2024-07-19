@@ -1,6 +1,6 @@
 export function init(THREE, OrbitControls) {
-    let scene, camera, renderer, analyser, dataArray;
-    const cubeCount = 500; // Adjusted for performance
+    let scene, camera, renderer, instancedMesh, analyser, dataArray;
+    const cubeCount = 300; // Adjusted for performance
 
     function setup() {
         scene = new THREE.Scene();
@@ -14,7 +14,7 @@ export function init(THREE, OrbitControls) {
         const cubeGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
         const material = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.8 });
 
-        const instancedMesh = new THREE.InstancedMesh(cubeGeometry, material, cubeCount);
+        instancedMesh = new THREE.InstancedMesh(cubeGeometry, material, cubeCount);
         const dummy = new THREE.Object3D();
 
         for (let i = 0; i < cubeCount; i++) {
@@ -58,15 +58,17 @@ export function init(THREE, OrbitControls) {
             for (let i = 0; i < cubeCount; i++) {
                 const scale = (dataArray[i % dataArray.length] / 128.0) + 0.5;
                 dummy.scale.set(scale, scale, scale);
-                const colorValue = dataArray[i % dataArray.length];
-                const r = Math.min(255, Math.max(0, colorValue + 100));
-                const g = Math.min(255, Math.max(0, 255 - colorValue));
-                const b = Math.min(255, Math.max(0, 128 - colorValue));
-                dummy.material = new THREE.MeshBasicMaterial({ color: new THREE.Color(r / 255, g / 255, b / 255) });
                 dummy.updateMatrix();
                 instancedMesh.setMatrixAt(i, dummy.matrix);
+
+                const colorValue = dataArray[i % dataArray.length];
+                const color = new THREE.Color(`hsl(${(colorValue / 256) * 360}, 100%, 50%)`);
+                instancedMesh.getColorAt(i, dummy);
+                dummy.color.copy(color);
+                instancedMesh.setColorAt(i, color);
             }
             instancedMesh.instanceMatrix.needsUpdate = true;
+            instancedMesh.instanceColor.needsUpdate = true;
         }
 
         instancedMesh.rotation.y += 0.005;
